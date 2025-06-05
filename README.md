@@ -1,4 +1,7 @@
 
+# Create the README.md file with the provided content
+
+readme_content = """
 # Wikipedia Text Classification: Geographic vs Non-Geographic
 
 ## 📌 Project Overview
@@ -30,7 +33,7 @@ The classification is based on features extracted from the text, which may inclu
 ## 🔁 Pipeline Overview
 
 1. **Data Collection**
-   - Fetch Wikipedia articles using the MediaWiki API
+   - Fetch Wikipedia articles using the [MediaWiki API](https://www.mediawiki.org/wiki/API:Main_page)
    - Label articles as geographic or non-geographic
 
 2. **Text Preprocessing**
@@ -52,6 +55,21 @@ The classification is based on features extracted from the text, which may inclu
 6. **Deployment**
    - Code and documentation hosted on GitHub
    - Project description and pipeline included in this README
+
+##  Pipeline Overview
+kiimia_nlp/
+│
+├── data/                  # Raw and processed data
+├── notebooks/             # Jupyter notebooks for exploration
+├── src/                   # Source code
+│   ├── preprocessing.py
+│   ├── feature_extraction.py
+│   ├── model.py
+│   └── utils.py
+├── tests/                 # Unit tests
+├── README.md              # Project description
+├── requirements.txt       # Python dependencies
+└── .gitignore
 
 ## 🚀 Getting Started
 
