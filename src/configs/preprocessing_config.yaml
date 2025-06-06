@@ -1,0 +1,29 @@
+# Text preprocessing configuration
+
+# Text cleaning options
+cleaning:
+  remove_urls: true
+  remove_html: true
+  remove_numbers: true
+  remove_punctuation: true
+  lowercase: true
+  remove_extra_whitespace: true
+
+# Stop words configuration  
+stopwords:
+  enabled: true
+  language: english
+
+# Word transformation options
+transformations:
+  stemming:
+    enabled: false
+    algorithm: porter
+
+  lemmatization:
+    enabled: true
+    pos_tagging: false
+
+# Processing settings
+batch_size: 1000
+max_text_length: 5000
