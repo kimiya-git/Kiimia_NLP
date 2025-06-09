@@ -5,14 +5,14 @@ import os
 import time
 from requests.exceptions import ReadTimeout, ConnectionError
 
-# Configuration Constants
+# Configuration
 USER_AGENT = "Kiimia_NLP/1.0 (https://github.com/kimiya-git/Kiimia_NLP.git; ghassemzadehkimia@gmail.com)"
 MAX_RETRIES = 3
-RETRY_DELAY = 10  # seconds
-REQUEST_DELAY = 1  # second between requests
-TIMEOUT = 120  # seconds
+RETRY_DELAY = 10
+REQUEST_DELAY = 1
+TIMEOUT = 120
 MAX_ARTICLES_PER_CATEGORY = 30
-MAX_TEXT_LENGTH = 5000  # characters
+MAX_TEXT_LENGTH = 5000
 
 
 class WikipediaDataCollector:
@@ -26,7 +26,7 @@ class WikipediaDataCollector:
         self.data_dir = 'data'
 
     def safe_fetch_page(self, title, retry_count=0):
-        """Fetch a page with robust error handling and retries"""
+
         try:
             page = self.wiki.page(title)
             return page if page.exists() else None
@@ -43,7 +43,7 @@ class WikipediaDataCollector:
             return None
 
     def fetch_category_articles(self, category):
-        """Fetch articles from a single category with progress tracking"""
+
         articles = []
         cat_page = self.safe_fetch_page(f"Category:{category}")
 
@@ -66,7 +66,7 @@ class WikipediaDataCollector:
         return articles
 
     def create_labeled_dataset(self):
-        """Create balanced geographic/non-geographic dataset"""
+
         geo_categories = [
             'Geography', 'Countries', 'Cities',
             'Mountains', 'Rivers', 'Lakes',
@@ -87,10 +87,10 @@ class WikipediaDataCollector:
         print("Fetching geographic articles...")
         for category in tqdm(geo_categories, desc="Geo Categories"):
             all_articles.extend(self.fetch_category_articles(category))
-            time.sleep(REQUEST_DELAY * 2)  # Extra delay between categories
+            time.sleep(REQUEST_DELAY * 2)
 
         geo_df = pd.DataFrame(all_articles)
-        geo_df['label'] = 1  # 1 for geographic
+        geo_df['label'] = 1
 
         all_articles = []
         print("\nFetching non-geographic articles...")
@@ -99,17 +99,17 @@ class WikipediaDataCollector:
             time.sleep(REQUEST_DELAY * 2)
 
         non_geo_df = pd.DataFrame(all_articles)
-        non_geo_df['label'] = 0  # 0 for non-geographic
+        non_geo_df['label'] = 0
 
-        # Combine and shuffle
+
         combined_df = pd.concat([geo_df, non_geo_df]).sample(frac=1).reset_index(drop=True)
 
-        # Save to CSV
+
         os.makedirs(self.data_dir, exist_ok=True)
         output_path = os.path.join(self.data_dir, 'wikipedia_dataset.csv')
         combined_df.to_csv(output_path, index=False)
 
-        # Print summary
+
         print("\nData Collection Complete!")
         print(f"Saved {len(combined_df)} articles to {output_path}")
         print(f"Geographic: {len(geo_df)} articles")

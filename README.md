@@ -1,81 +1,80 @@
+Wikipedia Text Classification: Geographic vs Non-Geographic
+📌 Project Overview
+This project classifies English Wikipedia texts into two categories:
 
-# Create the README.md file with the provided content
+Geographic (e.g., articles about countries, cities, rivers)
 
-readme_content = """
-# Wikipedia Text Classification: Geographic vs Non-Geographic
+Non-Geographic (e.g., articles about people, events, concepts)
 
-## 📌 Project Overview
+The pipeline combines NLP techniques and machine learning models to automate this classification.
 
-This project addresses the task of classifying English Wikipedia texts into two categories:
-- **Geographic**
-- **Non-Geographic**
+🧠 Problem Statement
+Given a Wikipedia article (English text), the system predicts its category:
 
-The classification is based on natural language processing (NLP) techniques and machine learning models. The goal is to build a pipeline that can automatically determine whether a given Wikipedia article is related to geographic content.
+Class 1: Geographic
 
-## 🧠 Problem Statement
+Class 2: Non-Geographic
 
-Given a text input (in English), the system must assign it to one of two classes:
-- `Geographic`
-- `Non-Geographic`
+Key challenges include feature extraction, handling noisy text, and model interpretability.
 
-The classification is based on features extracted from the text, which may include annotated keywords, linguistic patterns, and statistical representations.
+🛠️ Technologies Used
+Python 3.10+
 
-## 🛠️ Technologies Used
+NLTK – Tokenization, stopwords, stemming/lemmatization
 
-- **Python 3.10+**
-- **NLTK** – for tokenization, stopword removal, stemming, and lemmatization
-- **SpaCy** – for advanced NLP tasks (optional)
-- **scikit-learn** – for machine learning models (Naive Bayes, Logistic Regression)
-- **Wikipedia API** – for collecting and parsing Wikipedia articles
-- **WordNet** – for lemmatization
-- **Snowball** – for stopword filtering
+scikit-learn – Naive Bayes, Logistic Regression, TF-IDF
 
-## 🔁 Pipeline Overview
+Wikipedia API – Data collection
 
-1. **Data Collection**
-   - Fetch Wikipedia articles using the [MediaWiki API](https://www.mediawiki.org/wiki/API:Main_page)
-   - Label articles as geographic or non-geographic
+WordNet/Snowball – Text normalization
 
-2. **Text Preprocessing**
-   - Tokenization
-   - Stopword removal (Snowball)
-   - Stemming (Porter) or Lemmatization (WordNet)
+🔁 Pipeline Overview
+1. Data Collection
+Fetch articles using the MediaWiki API.
 
-3. **Feature Extraction**
-   - Bag of Words (BoW)
-   - TF-IDF (optional)
+Manual labeling for training data.
 
-4. **Model Training**
-   - Naive Bayes
-   - Logistic Regression (optional)
+2. Text Preprocessing
+Tokenization, stopword removal , lemmatization.
 
-5. **Evaluation**
-   - Accuracy, Precision, Recall, F1-score
+3. Feature Extraction
+TF-IDF representations.
 
-6. **Deployment**
-   - Code and documentation hosted on GitHub
-   - Project description and pipeline included in this README
+4. Model Training
 
-##  Pipeline Overview
-kiimia_nlp/
-│
-├── data/                  # Raw and processed data
-├── notebooks/             # Jupyter notebooks for exploration
-├── src/                   # Source code
-│   ├── preprocessing.py
-│   ├── feature_extraction.py
-│   ├── model.py
-│   └── utils.py
-├── tests/                 # Unit tests
-├── README.md              # Project description
-├── requirements.txt       # Python dependencies
-└── .gitignore
+Logistic Regression
 
-## 🚀 Getting Started
+5. Evaluation
+Metrics: Accuracy, Precision, Recall, F1-score.
 
-### Prerequisites
+Output: confusion_matrix.png for visualization.
 
-Install the required packages:
+6. Deployment
+GitHub-hosted code with modular scripts (see Project Structure).
 
-```bash
-pip install -r requirements.txt
+Klimia_NLP/  
+├── data/                    # Raw and processed datasets  
+├── configs/  
+│   └── preprocessing_config.yaml  # Configuration for text cleaning  
+├── src/  
+│   ├── data.py             # Data loading/utils  
+│   ├── preprocessing.py    # Text normalization  
+│   ├── feature_extraction.py  # BoW/TF-IDF implementation  
+│   ├── model.py            # ML models (Naive Bayes)  
+│   ├── prediction_pipeline.py  # End-to-end inference  
+│   └── utils.py            # Helper functions  
+├── model.pkl               # Serialized trained model  
+├── main.py                 # Entry point for training/evaluation  
+└── requirements.txt        # Dependencies (pip install -r requirements.txt)
+
+Task 2: Extended Assignment
+Klimia_NLP/assignment2/     # Additional experiments or secondary tasks  
+
+🚀 Getting Started
+1. Install dependencies:
+pip install -r requirements.txt  
+
+2. Run the pipeline:
+python main.py  # preprocess the input files
+python model.py   # Trains model and saves outputs 
+python prediction_pipeline.py   # given a sample text if classifies
