@@ -1,4 +1,5 @@
 Wikipedia Text Classification: Geographic vs Non-Geographic
+
 📌 Project Overview
 This project classifies English Wikipedia texts into two categories:
 
@@ -75,6 +76,9 @@ Klimia_NLP/assignment2/     # Additional experiments or secondary tasks
 pip install -r requirements.txt  
 
 2. Run the pipeline:
+
 python main.py  # preprocess the input files
+
 python model.py   # Trains model and saves outputs 
+
 python prediction_pipeline.py   # given a sample text if classifies
