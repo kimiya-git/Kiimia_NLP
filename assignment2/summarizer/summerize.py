@@ -1,32 +1,64 @@
-from nltk.tokenize import sent_tokenize, word_tokenize
-from collections import Counter
+from nltk import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 
-def score_sentences(text, avg_sentence_length, frequent_words):
-    sentences = sent_tokenize(text)
-    words = word_tokenize(text.lower())
-    stop_words = set(stopwords.words('english'))
-    words = [word for word in words if word.isalnum() and word not in stop_words]
-    word_freq = Counter(words)
-    sentence_scores = {}
-    for sentence in sentences:
-        sentence_words = word_tokenize(sentence.lower())
-        length_score = 1 - abs(len(sentence_words) - avg_sentence_length) / avg_sentence_length
-        word_score = sum(word_freq[word] for word in sentence_words if word in word_freq)
-        content_word_score = sum(1 for word in sentence_words if word in frequent_words)
-        total_score = length_score + word_score + content_word_score
-        sentence_scores[sentence] = total_score
-    return sentence_scores
+from .utils  import measure_length, chunk_text
+from .preprocess import get_style_metrics
+from collections import Counter
+import nltk
 
-def summarize_text(text, avg_sentence_length, frequent_words, max_sentences=5):
-    scores = score_sentences(text, avg_sentence_length, frequent_words)
-    top_sentences = sorted(scores, key=scores.get, reverse=True)[:max_sentences]
-    return ' '.join(top_sentences)
 
-def hierarchical_summarization(text, avg_sentence_length, frequent_words, context_window=4000):
-    tokens = word_tokenize(text)
-    if len(tokens) <= context_window:
-        return summarize_text(text, avg_sentence_length, frequent_words)
-    chunks = [' '.join(tokens[i:i+context_window]) for i in range(0, len(tokens), context_window)]
-    summaries = [summarize_text(chunk, avg_sentence_length, frequent_words) for chunk in chunks]
-    return summarize_text(' '.join(summaries), avg_sentence_length, frequent_words)
+def score_sentence(sentence, style_metrics):
+
+    try:
+        words = [word.lower() for word in word_tokenize(sentence) if word.isalnum()]
+        if not words:
+            return 0
+
+        stop_words = set(stopwords.words('english'))
+        content_words = [word for word in words if word not in stop_words]
+
+        length_diff = abs(len(words) - style_metrics['avg_sentence_length'])
+        length_score = 1 - (length_diff / style_metrics['avg_sentence_length'])
+
+        vocab_score = sum(1 for word in content_words if word in style_metrics['frequent_words']) / len(
+            content_words) if content_words else 0
+
+        pos_tags = [tag for _, tag in nltk.pos_tag(word_tokenize(sentence))]
+        pos_score = sum(style_metrics['pos_distribution'].get(tag, 0) for tag in pos_tags) / len(
+            pos_tags) if pos_tags else 0
+
+        return length_score + vocab_score + pos_score
+    except Exception as e:
+        print(f"Error scoring sentence: {e}")
+        return 0
+
+
+def summarize_with_style(content_text, style_metrics, max_sentences=10):
+
+    try:
+        sentences = sent_tokenize(content_text)
+        if not sentences:
+            return ""
+
+        scored = [(sent, score_sentence(sent, style_metrics)) for sent in sentences]
+        scored.sort(key=lambda x: x[1], reverse=True)
+        top_sentences = [sent for sent, _ in scored[:max_sentences]]
+
+        return ' '.join([s for s in sentences if s in top_sentences])
+    except Exception as e:
+        print(f"Error in summarization: {e}")
+        return content_text[:1000]
+
+
+def hierarchical_style_summary(text, style_metrics, target_length):
+
+    current_text = text
+
+    while measure_length(current_text) > target_length:
+        chunks = chunk_text(current_text, target_length)
+        summarized_chunks = [summarize_with_style(chunk, style_metrics) for chunk in chunks]
+        current_text = ' '.join(summarized_chunks)
+        if len(summarized_chunks) == 1 and measure_length(current_text) > target_length:
+            break
+
+    return current_text

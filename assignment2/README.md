@@ -1,56 +1,69 @@
-# Assignment 2 – Context-Aware Summarization with Style Transfer
+# Text Style-Adaptive Summarization System
 
-## 📚 Project Overview
+A Python-based NLP system that generates summaries of content text while adapting to the writing style of a provided style text. The system implements hierarchical summarization to handle texts longer than the context window limit.
 
-This project implements a summarization pipeline that generates a summary of a content document in the **style of another document**. The summarization is performed using a hierarchical approach when the input exceeds the context window limit. The implementation is done in **Python** using **NLTK**.
+## Features
 
-## 🧠 Objective
+- **Style Analysis**: Extracts writing style characteristics (sentence length, vocabulary, POS patterns)
+- **Adaptive Summarization**: Produces content summaries that match the style text's characteristics
+- **Hierarchical Processing**: Handles long documents through recursive summarization
+- **Query Generation**: Creates prompts 
+- 
+## File Structure
 
-Given two input texts:
-- **Content Text**: the document to be summarized.
-- **Style Text**: the document whose writing style should be mimicked.
+NLP_kimia/
+│
+├── venv/ # Virtual environment (should be in .gitignore)
+│
+├── Kiimia_NLP/
+│ └── assignment2/
+│ ├── data_assignment2/ # Additional data files
+│ ├── content_text.txt # Input content text
+│ ├── style_text.txt # Input style text
+│ ├── styled_summary.txt # Generated output
+│ └── query.txt # Generated LLM query
+│
+└── summarizer/ # Main code package
+├── init.py # Package initialization
+├── preprocess.py # Text preprocessing
+├── summarize.py # Summarization algorithms
+├── utils.py # Utility functions
+└── main.py # Main execution script
 
-The system:
-1. Summarizes both documents proportionally based on their lengths.
-2. Generates a query that instructs a language model to summarize the content in the style of the second document.
+## Usage :
+Place your input files in Kiimia_NLP/assignment2/:
 
-## 🛠️ Technologies Used
-- Python 3.x
-- NLTK (Natural Language Toolkit)
+content_text.txt: Text to summarize
 
-## 📁 Project Structure
+style_text.txt: Style to emulate
 
-NLP_kimia/ │ 
-├── Kiimia_NLP/ │ └── assignment2/ │ ├── data_assignment2/ │ │ ├── content_text.txt │ │ ├── style_text.txt │ │ ├── content_summary2.txt │ │ ├── style_summary2.txt │ │ └── query2.txt │ │ │ ├── summarizer/ │ │
-├── preprocess.py │ │ 
-├── summerize.py │ │ 
-├── summerize - Copy.py │ │
-└── utils.py │ │ │ └── main.py │ 
-├── data/ │ 
-├── processed_dataset.csv │ 
-├── tfidf_matrix.csv │ 
-└── wikipedia_dataset.csv │ 
-└── src/ 
-├── configs/ 
-│ 
-├── confusion_matrix.png │ 
-└── feature_extraction.py 
-├── main.py 
-├── model.pkl 
-└── prediction_pipeline.py
+Run the summarizer:
 
-## 🔄 Pipeline Steps
+python -m summarizer.main
 
-1. **Load Input Texts** from the `data/` folder.
-2. **Measure Lengths** of both documents.
-3. **Compute Target Lengths** proportionally based on a context window (default: 4000 tokens).
-4. **Extract Style Features** from the style text (average sentence length and frequent words).
-5. **Summarize Both Texts** using a hierarchical summarization strategy.
-6. **Generate a Query** that combines both summaries.
-7. **Save Outputs** to the `data_assignment2/` folder.
+Output files will be created in the data_assigment2 directory:
 
-## ▶️ How to Run
+styled_summary.txt: Style-adapted summary
 
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
+query.txt: Formatted  prompt
+
+## Configuration
+Edit these files as needed:
+
+summarizer/main.py: Change context window size (default: 4000 tokens)
+
+summarizer/summarize.py: Adjust summary length parameters
+
+
+## Example Workflow :
+Add your content to Kiimia_NLP/assignment2/content_text.txt
+
+Add style reference to Kiimia_NLP/assignment2/style_text.txt
+
+Run the program
+
+Check results in:
+
+styled_summary.txt
+
+query.txt

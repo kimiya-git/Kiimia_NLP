@@ -1,21 +1,38 @@
-from nltk.tokenize import word_tokenize
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from collections import Counter
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+
 
 def measure_length(text):
+
     return len(word_tokenize(text))
 
-def proportional_length(content_length, style_length, context_window):
-    total_length = content_length + style_length
-    content_target_length = int((content_length / total_length) * context_window)
-    style_target_length = context_window - content_target_length
-    return content_target_length, style_target_length
 
-def generate_query(content_summary, style_summary):
-    return f"Summarize the following content in the style of the provided text:\n\nContent Summary:\n{content_summary}\n\nStyle Summary:\n{style_summary}"
+def chunk_text(text, max_tokens=4000):
 
-def load_text(filepath):
-    with open(filepath, "r", encoding="utf-8") as f:
-        return f.read()
+    sentences = sent_tokenize(text)
+    chunks = []
+    current_chunk = []
+    current_length = 0
 
-def save_text(filepath, text):
-    with open(filepath, "w", encoding="utf-8") as f:
-        f.write(text)
+    for sentence in sentences:
+        sent_tokens = word_tokenize(sentence)
+        sent_length = len(sent_tokens)
+
+        if current_length + sent_length > max_tokens and current_chunk:
+            chunks.append(' '.join(current_chunk))
+            current_chunk = []
+            current_length = 0
+
+        current_chunk.append(sentence)
+        current_length += sent_length
+
+    if current_chunk:
+        chunks.append(' '.join(current_chunk))
+
+    return chunks

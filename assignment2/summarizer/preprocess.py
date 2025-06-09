@@ -1,19 +1,35 @@
-import nltk
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
+from .utils  import measure_length, chunk_text
 from collections import Counter
+import nltk
 
-nltk.download('punkt')
-nltk.download('stopwords')
 
-def get_average_sentence_length(text):
-    sentences = sent_tokenize(text)
-    total_length = sum(len(word_tokenize(sentence)) for sentence in sentences)
-    return total_length / len(sentences)
+def get_style_metrics(style_text):
 
-def get_frequent_content_words(text, top_n=50):
-    words = word_tokenize(text.lower())
-    stop_words = set(stopwords.words('english'))
-    content_words = [word for word in words if word.isalnum() and word not in stop_words]
-    word_freq = Counter(content_words)
-    return [word for word, freq in word_freq.most_common(top_n)]
+    try:
+        sentences = sent_tokenize(style_text)
+        words = [word.lower() for word in word_tokenize(style_text) if word.isalnum()]
+
+        avg_sent_len = sum(len(word_tokenize(s)) for s in sentences) / len(sentences) if sentences else 15
+
+        stop_words = set(stopwords.words('english'))
+        content_words = [word for word in words if word not in stop_words]
+        word_freq = Counter(content_words)
+        top_words = [word for word, _ in word_freq.most_common(50)]
+
+        pos_tags = nltk.pos_tag(words)
+        pos_dist = Counter(tag for _, tag in pos_tags)
+
+        return {
+            'avg_sentence_length': avg_sent_len,
+            'frequent_words': top_words,
+            'pos_distribution': pos_dist
+        }
+    except Exception as e:
+        print(f"Error analyzing style: {e}")
+        return {
+            'avg_sentence_length': 15,
+            'frequent_words': [],
+            'pos_distribution': Counter()
+        }
