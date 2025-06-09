@@ -47,7 +47,7 @@ NLP_kimia/ │
 4. **Extract Style Features** from the style text (average sentence length and frequent words).
 5. **Summarize Both Texts** using a hierarchical summarization strategy.
 6. **Generate a Query** that combines both summaries.
-7. **Save Outputs** to the `data/` folder.
+7. **Save Outputs** to the `data_assignment2/` folder.
 
 ## ▶️ How to Run
 
