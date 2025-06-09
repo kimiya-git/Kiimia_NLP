@@ -20,7 +20,24 @@ The system:
 
 ## 📁 Project Structure
 
-NLP_kimia/ │ ├── Kiimia_NLP/ │ └── assignment2/ │ ├── data_assignment2/ │ │ ├── content_text.txt │ │ ├── style_text.txt │ │ ├── content_summary2.txt │ │ ├── style_summary2.txt │ │ └── query2.txt │ │ │ ├── summarizer/ │ │ ├── preprocess.py │ │ ├── summerize.py │ │ ├── summerize - Copy.py │ │ └── utils.py │ │ │ └── main.py │ ├── data/ │ ├── processed_dataset.csv │ ├── tfidf_matrix.csv │ └── wikipedia_dataset.csv │ └── src/ ├── configs/ │ ├── confusion_matrix.png │ └── feature_extraction.py ├── main.py ├── model.pkl └── prediction_pipeline.py
+NLP_kimia/ │ 
+├── Kiimia_NLP/ │ └── assignment2/ │ ├── data_assignment2/ │ │ ├── content_text.txt │ │ ├── style_text.txt │ │ ├── content_summary2.txt │ │ ├── style_summary2.txt │ │ └── query2.txt │ │ │ ├── summarizer/ │ │
+├── preprocess.py │ │ 
+├── summerize.py │ │ 
+├── summerize - Copy.py │ │
+└── utils.py │ │ │ └── main.py │ 
+├── data/ │ 
+├── processed_dataset.csv │ 
+├── tfidf_matrix.csv │ 
+└── wikipedia_dataset.csv │ 
+└── src/ 
+├── configs/ 
+│ 
+├── confusion_matrix.png │ 
+└── feature_extraction.py 
+├── main.py 
+├── model.pkl 
+└── prediction_pipeline.py
 
 ## 🔄 Pipeline Steps
 
