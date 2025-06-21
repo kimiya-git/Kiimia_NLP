@@ -13,22 +13,22 @@ A Python-based NLP system that generates summaries of content text while adaptin
 
 NLP_kimia/
 │
-├── venv/ # Virtual environment (should be in .gitignore)
+├── venv/                   
 │
 ├── Kiimia_NLP/
-│ └── assignment2/
-│ ├── data_assignment2/ # Additional data files
-│ ├── content_text.txt # Input content text
-│ ├── style_text.txt # Input style text
-│ ├── styled_summary.txt # Generated output
-│ └── query.txt # Generated LLM query
+│   └── assignment2/
+│       ├── data_assignment2/    # Additional data files
+│       ├── content_text.txt      # Input content text
+│       ├── style_text.txt        # Input style text
+│       ├── styled_summary.txt    # Generated output
+│       └── query.txt             # Generated LLM query
 │
-└── summarizer/ # Main code package
-├── init.py # Package initialization
-├── preprocess.py # Text preprocessing
-├── summarize.py # Summarization algorithms
-├── utils.py # Utility functions
-└── main.py # Main execution script
+└── summarizer/              # Main code package
+    ├── __init__.py          # Package initialization
+    ├── preprocess.py        # Text preprocessing
+    ├── summarize.py         # Summarization algorithms
+    ├── utils.py            # Utility functions
+    └── main.py             # Main execution script
 
 ## Usage :
 Place your input files in Kiimia_NLP/assignment2/:
